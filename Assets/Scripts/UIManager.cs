@@ -7,4 +7,10 @@ public class UIManager : MonoBehaviour
     {
         SceneManager.LoadScene("Game");
     }
+
+   
+    public void QuitButton()
+    {
+        Debug.Log("Quit button is working");
+    }
 }
