@@ -143,7 +143,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 192185844}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ed3f0f182bd47204f90c2945c1f729ac, type: 3}
   m_Name: 
@@ -726,6 +726,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 510307436}
+        m_TargetAssemblyTypeName: BuildingPanel, Assembly-CSharp
+        m_MethodName: ToggleTargetScript
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &510307434
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -777,6 +789,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   panel: {fileID: 1492470398}
+  tilePlacer: {fileID: 192185845}
 --- !u!1 &546835242
 GameObject:
   m_ObjectHideFlags: 0
@@ -1183,8 +1196,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 121.49, y: -222.51}
-  m_SizeDelta: {x: -242.9728, y: -445.024}
+  m_AnchoredPosition: {x: 255, y: -282}
+  m_SizeDelta: {x: -566.4412, y: -634.48}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1492470400
 MonoBehaviour:
