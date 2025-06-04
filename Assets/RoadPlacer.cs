@@ -3,17 +3,15 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 
-public class TilePlacer : MonoBehaviour
+public class RoadPlacer : MonoBehaviour
 {
-    public GameObject redTilePrefab;
-    public GameObject blueTilePrefab;
-    public GameObject blackTilePrefab;
-    
-    public LayerMask roadTileMask; 
+  
+    public GameObject roadTilePrefab;
+
     public LayerMask groundMask;
     public LayerMask tileMask;
     public float gridSize = 10f;
-   
+
     public int gridWidth = 10;
     public int gridHeight = 10;
     public Vector3 gridOrigin = Vector3.zero;
@@ -23,16 +21,15 @@ public class TilePlacer : MonoBehaviour
     private GameObject currentTilePrefab;
 
     [Header("Tile Costs")]
-    public int redTileCost = 100;
-    public int blueTileCost = 200;
-   
+    public int roadTileCost = 50;
+    
 
     void Start()
     {
         mainCamera = Camera.main;
 
         // Default selected tile
-        currentTilePrefab = redTilePrefab;
+        currentTilePrefab = roadTilePrefab;
 
         // Create ghost tile
         ghostTile = Instantiate(currentTilePrefab);
@@ -49,7 +46,7 @@ public class TilePlacer : MonoBehaviour
         }
         Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
 
-        if (Physics.Raycast(ray, out RaycastHit hit, 1000f, groundMask ))
+        if (Physics.Raycast(ray, out RaycastHit hit, 1000f, groundMask))
         {
             Vector3 point = hit.point;
 
@@ -70,30 +67,19 @@ public class TilePlacer : MonoBehaviour
             // Place real tile on click
             if (Input.GetMouseButtonDown(0) && !tileExists)
             {
-                // Define the overlap area (same size as a tile)
-                Vector3 boxSize = new Vector3(gridSize * 0.9f, 1f, gridSize * 0.9f);
-                Collider[] overlaps = Physics.OverlapBox(spawnPos, boxSize / 2, Quaternion.identity, roadTileMask);
-
-                if (overlaps.Length > 0)
+                int cost = GetCurrentTileCost();
+                if (CityManager.Instance.money >= cost)
                 {
-                    int cost = GetCurrentTileCost();
-                    if (CityManager.Instance.money >= cost)
-                    {
-                        CityManager.Instance.money -= cost;
-                        Instantiate(currentTilePrefab, spawnPos, Quaternion.identity);
-                        Debug.Log($"Placed tile: -{cost} money. Remaining: {CityManager.Instance.money}");
-                    }
-                    else
-                    {
-                        Debug.Log("Not enough money to place this tile.");
-                    }
+                    CityManager.Instance.money -= cost;
+                    Instantiate(currentTilePrefab, spawnPos, Quaternion.identity);
+                    Debug.Log($"Placed tile: -{cost} money. Remaining: {CityManager.Instance.money}");
                 }
                 else
                 {
-                    Debug.Log("Cannot place tile: not touching any road tile.");
+                    Debug.Log("Not enough money to place this tile.");
                 }
+               
             }
-
         }
         else
         {
@@ -101,26 +87,20 @@ public class TilePlacer : MonoBehaviour
         }
     }
 
-    public void SetRedTile()
-    {
-        SwitchTile(redTilePrefab);
-    }
+    
 
-    public void SetBlueTile()
-    {
-        SwitchTile(blueTilePrefab);
+    public void SetBlackTile()
+    { 
+     SwitchTile(roadTilePrefab);
     }
-
     int GetCurrentTileCost()
     {
-        if (currentTilePrefab == redTilePrefab) return redTileCost;
-        if (currentTilePrefab == blueTilePrefab) return blueTileCost;
+        if (currentTilePrefab == roadTilePrefab) return roadTileCost;
         
+
 
         return 0;
     }
-
-
     void SwitchTile(GameObject tilePrefab)
     {
         currentTilePrefab = tilePrefab;
@@ -128,7 +108,7 @@ public class TilePlacer : MonoBehaviour
         // Destroy old ghost and create new one
         if (ghostTile != null)
             Destroy(ghostTile);
-       
+
         ghostTile = Instantiate(currentTilePrefab);
         MakeTransparent(ghostTile);
         ghostTile.layer = LayerMask.NameToLayer("");
